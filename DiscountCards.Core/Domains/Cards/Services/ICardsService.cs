@@ -8,8 +8,9 @@ namespace DiscountCards.Core.Domains.Cards.Services
 {
     public interface ICardsService
     {
-        string Create(Card card);
         Card Get(int id);
-        string Delete(int id);
+        IEnumerable<Card> GetAllUserCards(int userId);
+        string Create(Card card);
+        void Delete(int id);
     }
 }

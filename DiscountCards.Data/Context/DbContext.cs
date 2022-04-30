@@ -38,7 +38,7 @@ namespace DiscountCards.Data.Context
         public DataContext CreateDbContext(string[] args)
         {
             var options = new DbContextOptionsBuilder()
-                .UseNpgsql("FakeConnectionStringOnlyForMigrations")
+                .UseNpgsql("Host=localhost;Port=5432;Database=DiscountCards;Username=discount_cards;Password=qwerty12345")
                 .Options;
 
             return new DataContext(options);

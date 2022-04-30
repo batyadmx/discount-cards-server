@@ -9,26 +9,31 @@ namespace DiscountCards.Core.Domains.Cards.Services
 {
     class CardsService : ICardsService
     {
-        private readonly ICardsRepository cardsRepository;
+        private readonly ICardsRepository _cardsRepository;
 
         public CardsService(ICardsRepository cardsRepository)
         {
-            this.cardsRepository = cardsRepository;
+            _cardsRepository = cardsRepository;
+        }
+        
+        public Card Get(int id)
+        {
+            return _cardsRepository.Get(id);
+        }
+
+        public IEnumerable<Card> GetAllUserCards(int userId)
+        {
+            return _cardsRepository.GetAllUserCards(userId);
         }
 
         public string Create(Card card)
         {
-            return cardsRepository.Create(card);
+            return _cardsRepository.Create(card);
         }
 
-        public string Delete(int id)
+        public void Delete(int id)
         {
-            return cardsRepository.Delete(id);
-        }
-
-        public Card Get(int id)
-        {
-            return cardsRepository.Get(id);
+            _cardsRepository.Delete(id);
         }
     }
 }
