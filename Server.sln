@@ -1,13 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountCards.Data", "DiscountCards.Data\DiscountCards.Data.csproj", "{1F34939B-4D46-4429-A3A0-589EC1CEC5EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscountCards.Core", "DiscountCards.Core\DiscountCards.Core.csproj", "{574C5C2A-936B-48D2-A70D-7C0439C119F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountCards.Core", "DiscountCards.Core\DiscountCards.Core.csproj", "{69466F78-4A7B-42C2-A17D-5A02BCB61214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscountCards.Data", "DiscountCards.Data\DiscountCards.Data.csproj", "{612DB849-16C3-4D2E-86C3-97599AC4A955}"
+	ProjectSection(ProjectDependencies) = postProject
+		{574C5C2A-936B-48D2-A70D-7C0439C119F2} = {574C5C2A-936B-48D2-A70D-7C0439C119F2}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountCards.API", "DiscountCards.API\DiscountCards.API.csproj", "{CAD9B301-3493-4264-8B67-9A64D6DCF50B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountCards.API", "DiscountCards.API\DiscountCards.API.csproj", "{13363BC2-F60A-4F62-AD19-009B0D1F6F2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +18,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1F34939B-4D46-4429-A3A0-589EC1CEC5EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F34939B-4D46-4429-A3A0-589EC1CEC5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F34939B-4D46-4429-A3A0-589EC1CEC5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F34939B-4D46-4429-A3A0-589EC1CEC5EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69466F78-4A7B-42C2-A17D-5A02BCB61214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69466F78-4A7B-42C2-A17D-5A02BCB61214}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69466F78-4A7B-42C2-A17D-5A02BCB61214}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69466F78-4A7B-42C2-A17D-5A02BCB61214}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAD9B301-3493-4264-8B67-9A64D6DCF50B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAD9B301-3493-4264-8B67-9A64D6DCF50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAD9B301-3493-4264-8B67-9A64D6DCF50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAD9B301-3493-4264-8B67-9A64D6DCF50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{574C5C2A-936B-48D2-A70D-7C0439C119F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{574C5C2A-936B-48D2-A70D-7C0439C119F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{574C5C2A-936B-48D2-A70D-7C0439C119F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{574C5C2A-936B-48D2-A70D-7C0439C119F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{612DB849-16C3-4D2E-86C3-97599AC4A955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{612DB849-16C3-4D2E-86C3-97599AC4A955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{612DB849-16C3-4D2E-86C3-97599AC4A955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{612DB849-16C3-4D2E-86C3-97599AC4A955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13363BC2-F60A-4F62-AD19-009B0D1F6F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13363BC2-F60A-4F62-AD19-009B0D1F6F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13363BC2-F60A-4F62-AD19-009B0D1F6F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13363BC2-F60A-4F62-AD19-009B0D1F6F2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {71D37956-FEE3-4193-9D3D-B6C47B5EED10}
+		SolutionGuid = {10983930-6B2F-4F25-A9F2-F181DE90A7FD}
 	EndGlobalSection
 EndGlobal
