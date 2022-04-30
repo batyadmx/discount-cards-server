@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DiscountCards.API.Controllers.Cards
 {
+    [ApiController]
+    [Route("[controller]")]
     public class CardsController : ControllerBase
     {
         private readonly ICardsService cardsService;
@@ -15,14 +17,12 @@ namespace DiscountCards.API.Controllers.Cards
         }
 
         [HttpPost]
-        [Route("cards/create")]
         public string Create(CreateCardDto cardInfo)
         {
             return cardsService.Create(new Card() { Number = cardInfo.Number, UserId = cardInfo.UserId});
         }
 
-        [HttpGet]
-        [Route("cards/{id}")]
+        [HttpGet("{id}")]
         public CardDto Get(int id)
         {
             return new CardDto(cardsService.Get(id));

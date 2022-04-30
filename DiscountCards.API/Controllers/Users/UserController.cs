@@ -10,7 +10,9 @@ using DiscountCards.Core.Domains.Users;
 
 namespace DiscountCards.API.Controllers.Users
 {
-    public class UserController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class UserController : ControllerBase
     {
         private readonly IUserService userService;
 
@@ -25,8 +27,7 @@ namespace DiscountCards.API.Controllers.Users
             return userService.Create(new User() { Login = user.Login, Password = user.Password });
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public UserDto Get(int id)
         {
             return new UserDto(userService.Get(id));
