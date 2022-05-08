@@ -14,23 +14,25 @@ namespace DiscountCards.API.Controllers.Users
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
-            this.userService = userService;
+            this._userService = userService;
         }
 
         [HttpPost]
-        public string Create(CreateUserDto user)
+        public async Task<string> Create(CreateUserDto user)
         {
-            return userService.Create(new User() { Login = user.Login, Password = user.Password });
+            return await _userService.Create(new User() { Login = user.Login, Password = user.Password });
         }
 
         [HttpGet("{id}")]
-        public UserDto Get(int id)
+        public async Task<UserDto> Get(int id)
         {
-            return new UserDto(userService.Get(id));
+            var model = await _userService.Get(id);
+            
+            return new UserDto(model);
         }
     }
 }

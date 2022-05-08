@@ -16,24 +16,24 @@ namespace DiscountCards.Core.Domains.Cards.Services
             _cardsRepository = cardsRepository;
         }
         
-        public Card Get(int id)
+        public async Task<Card> Get(int id)
         {
-            return _cardsRepository.Get(id);
+            return await _cardsRepository.Get(id);
         }
 
-        public IEnumerable<Card> GetAllUserCards(int userId)
+        public async Task<IEnumerable<Card>> GetAllUserCards(int userId)
         {
-            return _cardsRepository.GetAllUserCards(userId);
+            return await _cardsRepository.GetAllUserCards(userId);
         }
 
-        public string Create(Card card)
+        public async Task<string> Create(Card card)
         {
-            return _cardsRepository.Create(card);
+            return await _cardsRepository.Create(card);
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _cardsRepository.Delete(id);
+            await _cardsRepository.Delete(id);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace DiscountCards.Core.Domains.Users.Services
 {
     public interface IUserService
     {
-        string Create(User user);
-        User Get(int id);
-        string Delete(int id);
+        Task<User> Get(int id);
+        Task<string> Create(User user);
+        Task Delete(int id);
     }
 }

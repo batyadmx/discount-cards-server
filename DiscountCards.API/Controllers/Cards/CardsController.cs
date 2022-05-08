@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DiscountCards.API.Controllers.Cards.Dto;
 using DiscountCards.Core.Domains.Cards;
 using DiscountCards.Core.Domains.Cards.Services;
@@ -21,9 +22,9 @@ namespace DiscountCards.API.Controllers.Cards
         }
         
         [HttpGet("{id:int}")]
-        public CardDto Get(int id)
+        public async Task<CardDto> Get(int id)
         {
-            var model = _cardsService.Get(id);
+            var model = await _cardsService.Get(id);
             
             return new CardDto()
             {
@@ -36,9 +37,9 @@ namespace DiscountCards.API.Controllers.Cards
         }
         
         [HttpGet("user/{userId:int}")]
-        public IEnumerable<CardDto> GetAllUserCards(int userId)
+        public async Task<IEnumerable<CardDto>> GetAllUserCards(int userId)
         {
-            var cards = _cardsService.GetAllUserCards(userId);
+            var cards = await _cardsService.GetAllUserCards(userId);
 
             return cards.Select(model => new CardDto()
             {
@@ -51,9 +52,9 @@ namespace DiscountCards.API.Controllers.Cards
         }
 
         [HttpPost]
-        public string Create(CreateCardDto cardInfo)
+        public async Task<string> Create(CreateCardDto cardInfo)
         {
-            return _cardsService.Create(new Card
+            return await _cardsService.Create(new Card
             {
                 UserId = cardInfo.UserId,
                 Name = cardInfo.Name,
@@ -63,9 +64,9 @@ namespace DiscountCards.API.Controllers.Cards
         }
 
         [HttpDelete("{id:int}")] 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _cardsService.Delete(id);
+            await _cardsService.Delete(id);
         }
     }
 }
