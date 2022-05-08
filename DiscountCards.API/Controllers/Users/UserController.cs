@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using DiscountCards.Core.Domains.Users.Services;
 using DiscountCards.API.Controllers.Users.Dto;
@@ -18,13 +14,18 @@ namespace DiscountCards.API.Controllers.Users
 
         public UserController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         [HttpPost]
         public async Task<string> Create(CreateUserDto user)
         {
-            return await _userService.Create(new User() { Login = user.Login, Password = user.Password });
+            return await _userService.Create(new User() 
+                { 
+                    Login = user.Login, 
+                    Password = user.Password,
+                    ConfirmPassword = user.ConfirmPassword
+                });
         }
 
         [HttpGet("{id}")]
@@ -32,7 +33,11 @@ namespace DiscountCards.API.Controllers.Users
         {
             var model = await _userService.Get(id);
             
-            return new UserDto(model);
+            return new UserDto()
+            {
+                Id = model.Id,
+                Login = model.Login
+            };
         }
     }
 }

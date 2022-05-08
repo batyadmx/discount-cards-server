@@ -8,5 +8,10 @@ namespace DiscountCards.Core.Domains.Users.Repositories
 {
     public interface IUserRepository
     {
+        Task<User> Get(int id);
+        Task<string> Create(User user);
+        Task Delete(int id);
+
+        bool ContainsByLogin(string login);
     }
 }

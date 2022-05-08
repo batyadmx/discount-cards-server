@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DiscountCards.Data.Cards;
+using DiscountCards.Data.Users;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace DiscountCards.Data.Context
@@ -12,6 +13,7 @@ namespace DiscountCards.Data.Context
     public class DataContext : DbContext 
     {
         public DbSet<CardDbModel> Cards { get; set; }
+        public DbSet<UserDbModel> Users { get; set; }
 
         public DataContext(DbContextOptions options) : base(options) {}
 

@@ -32,9 +32,7 @@ namespace DiscountCards.Data.Cards
                 ImageSource = entity.ImageSource,
                 Number = entity.Number
             };
-            
-            await _context.SaveChangesAsync();
-            
+
             return card;
         }
 

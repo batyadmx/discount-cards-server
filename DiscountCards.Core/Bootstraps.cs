@@ -12,8 +12,10 @@ namespace DiscountCards.Core
     {
         public static IServiceCollection AddCore(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<ICardsService, CardsService>()
-                             .AddScoped<IUserService, UserService>();
+            serviceCollection
+                .AddScoped<ICardsService, CardsService>()
+                .AddScoped<IUserService, UserService>();
+            
             return serviceCollection;
         }
     }

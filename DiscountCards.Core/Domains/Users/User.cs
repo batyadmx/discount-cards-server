@@ -11,7 +11,6 @@ namespace DiscountCards.Core.Domains.Users
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }
