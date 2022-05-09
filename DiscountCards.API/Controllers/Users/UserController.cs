@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DiscountCards.Core.Domains.Users.Services;
 using DiscountCards.API.Controllers.Users.Dto;
 using DiscountCards.Core.Domains.Users;
+using Microsoft.AspNetCore.Routing;
 
 namespace DiscountCards.API.Controllers.Users
 {
@@ -23,9 +24,18 @@ namespace DiscountCards.API.Controllers.Users
             return await _userService.Create(new User() 
                 { 
                     Login = user.Login, 
-                    Password = user.Password,
-                    ConfirmPassword = user.ConfirmPassword
+                    Password = user.Password
                 });
+        }
+        
+        [HttpPost("auth")]
+        public async Task<bool> Authentication(AuthUserDto user)
+        {
+            return await _userService.Authentication(new User() 
+            { 
+                Login = user.Login, 
+                Password = user.Password
+            });
         }
 
         [HttpGet("{id}")]

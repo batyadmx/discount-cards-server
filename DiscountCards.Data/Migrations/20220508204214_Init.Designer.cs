@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiscountCards.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220508164744_Create users")]
-    partial class Createusers
+    [Migration("20220508204214_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,17 +29,13 @@ namespace DiscountCards.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ImageSource")
-                        .HasColumnType("text")
-                        .HasColumnName("image_source");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
                     b.Property<string>("Number")
                         .HasColumnType("text")
                         .HasColumnName("number");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("integer")
+                        .HasColumnName("shop_id");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -48,21 +44,31 @@ namespace DiscountCards.Data.Migrations
                     b.HasKey("Id")
                         .HasName("pk_cards");
 
-                    b.ToTable("cards");
+                    b.HasIndex("ShopId")
+                        .HasDatabaseName("ix_cards_shop_id");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Number = "1234567",
-                            UserId = -1
-                        },
-                        new
-                        {
-                            Id = -2,
-                            Number = "7654321",
-                            UserId = -2
-                        });
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_cards_user_id");
+
+                    b.ToTable("cards");
+                });
+
+            modelBuilder.Entity("DiscountCards.Data.Shops.ShopDbModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_shops");
+
+                    b.ToTable("shops");
                 });
 
             modelBuilder.Entity("DiscountCards.Data.Users.UserDbModel", b =>
@@ -93,6 +99,32 @@ namespace DiscountCards.Data.Migrations
                         .HasName("pk_users");
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("DiscountCards.Data.Cards.CardDbModel", b =>
+                {
+                    b.HasOne("DiscountCards.Data.Shops.ShopDbModel", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId")
+                        .HasConstraintName("fk_cards_shops_shop_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DiscountCards.Data.Users.UserDbModel", "User")
+                        .WithMany("Cards")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_cards_users_user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shop");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DiscountCards.Data.Users.UserDbModel", b =>
+                {
+                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }

@@ -21,9 +21,9 @@ namespace DiscountCards.Core.Domains.Cards.Services
             return await _cardsRepository.Get(id);
         }
 
-        public async Task<IEnumerable<Card>> GetAllUserCards(int userId)
+        public async Task<IEnumerable<Card>> GetAllUserCards(string login)
         {
-            return await _cardsRepository.GetAllUserCards(userId);
+            return await _cardsRepository.GetAllUserCards(login);
         }
 
         public async Task<string> Create(Card card)

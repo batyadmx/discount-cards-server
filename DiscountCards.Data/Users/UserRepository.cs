@@ -23,8 +23,23 @@ namespace DiscountCards.Data.Users
             var entity = await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
 
             if (entity == null)
-                throw new ObjectNotFoundException($"Пользователь с id={id} не найдена");
+                throw new ObjectNotFoundException($"Пользователь с id={id} не найден");
 
+            return new User()
+            {
+                Id = entity.Id,
+                Login = entity.Login,
+                Password = entity.Password
+            };
+        }
+
+        public async Task<User> GetByLogin(string login)
+        {
+            var entity = await _context.Users.FirstOrDefaultAsync(c => c.Login == login);
+            
+            if (entity == null)
+                throw new ObjectNotFoundException($"Пользователь с login={login} не найден");
+            
             return new User()
             {
                 Id = entity.Id,
@@ -54,13 +69,23 @@ namespace DiscountCards.Data.Users
             var entity = await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
 
             if (entity == null)
-                throw new ObjectNotFoundException($"Карта с id={id} не найдена");
+                throw new ObjectNotFoundException($"Пользователь с id={id} не найден");
             
             _context.Users.Remove(entity);
             
             await _context.SaveChangesAsync();
         }
-        
+
+        public async Task<bool> Authentication(User user)
+        {
+            var entity = await _context.Users.FirstOrDefaultAsync(c => c.Login == user.Login);
+            
+            if (entity == null)
+                throw new ObjectNotFoundException($"Пользователь с id={user.Id} не найден");
+
+            return entity.Password == user.Password;
+        }
+
         public bool ContainsByLogin(string login) => _context
             .Users
             .Any(user => user.Login == login);

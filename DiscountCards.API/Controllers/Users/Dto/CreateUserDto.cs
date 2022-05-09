@@ -9,6 +9,5 @@ namespace DiscountCards.API.Controllers.Users.Dto
     {
         public string Login { get; set; }
         public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
     }
 }

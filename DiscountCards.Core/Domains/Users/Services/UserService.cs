@@ -19,12 +19,14 @@ namespace DiscountCards.Core.Domains.Users.Services
         {
             return await _userRepository.Get(id);
         }
+
+        public async Task<User> GetByLogin(string login)
+        {
+            return await _userRepository.GetByLogin(login);
+        }
         
         public async Task<string> Create(User user)
         {
-            if (user.Password != user.ConfirmPassword)
-                throw new ArgumentException("Пароли должны совпадать");
-
             if (_userRepository.ContainsByLogin(user.Login))
                 throw new ArgumentException("Логин уже существует");
             
@@ -34,6 +36,11 @@ namespace DiscountCards.Core.Domains.Users.Services
         public async Task Delete(int id)
         {
             await _userRepository.Delete(id);
+        }
+
+        public async Task<bool> Authentication(User user)
+        {
+            return await _userRepository.Authentication(user);
         }
     }
 }

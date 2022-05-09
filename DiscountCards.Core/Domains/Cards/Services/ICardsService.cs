@@ -9,7 +9,7 @@ namespace DiscountCards.Core.Domains.Cards.Services
     public interface ICardsService
     {
         Task<Card> Get(int id);
-        Task<IEnumerable<Card>> GetAllUserCards(int userId);
+        Task<IEnumerable<Card>> GetAllUserCards(string login);
         Task<string> Create(Card card);
         Task Delete(int id);
     }

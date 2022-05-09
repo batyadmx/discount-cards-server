@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DiscountCards.Core.Domains.Cards;
 using DiscountCards.Core.Domains.Cards.Repositories;
 using DiscountCards.Data.Context;
+using DiscountCards.Data.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiscountCards.Data.Cards
@@ -28,33 +29,40 @@ namespace DiscountCards.Data.Cards
             var card = new Card() { 
                 Id = entity.Id, 
                 UserId = entity.UserId,
-                Name = entity.Name,
-                ImageSource = entity.ImageSource,
+                ShopId = entity.ShopId,
                 Number = entity.Number
             };
 
             return card;
         }
 
-        public async Task<IEnumerable<Card>> GetAllUserCards(int userId)
+        public async Task<IEnumerable<Card>> GetAllUserCards(string login)
         {
-            return await _context.Cards.Where(it => userId == it.UserId).Select(it => 
+            var user = await _context.Users.FirstOrDefaultAsync(it => it.Login == login);
+
+            if (user == null)
+                throw new ObjectNotFoundException($"Пользователь с login={login} не найден");
+
+            return await _context.Cards.Where(it => it.UserId == user.Id).Select(it => 
                 new Card { 
                     Id = it.Id, 
                     UserId = it.UserId,
-                    Name = it.Name,
-                    ImageSource = it.ImageSource,
+                    ShopId = it.ShopId,
                     Number = it.Number
                 }).ToListAsync();
         }
 
         public async Task<string> Create(Card card)
         {
+            var shop = await _context.Shops.FirstOrDefaultAsync(it => it.Id == card.ShopId);
+
+            if (shop == null)
+                throw new ObjectNotFoundException($"Магазина с id={card.ShopId} не существует");
+
             var entity = new CardDbModel()
             {
                 UserId = card.UserId,
-                Name = card.Name,
-                ImageSource = card.ImageSource,
+                ShopId = card.ShopId,
                 Number = card.Number
             };
             
