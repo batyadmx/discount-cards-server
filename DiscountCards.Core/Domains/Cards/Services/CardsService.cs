@@ -23,11 +23,17 @@ namespace DiscountCards.Core.Domains.Cards.Services
 
         public async Task<IEnumerable<Card>> GetAllUserCards(string login)
         {
+            if (string.IsNullOrEmpty(login))
+                throw new ValidationException("Логин не должен быть пустым");
+            
             return await _cardsRepository.GetAllUserCards(login);
         }
 
         public async Task<string> Create(Card card)
         {
+            if (string.IsNullOrEmpty(card.Number))
+                throw new ValidationException("Номер карты не должен быть пустым");
+            
             return await _cardsRepository.Create(card);
         }
 

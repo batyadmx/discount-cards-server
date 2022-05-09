@@ -27,8 +27,14 @@ namespace DiscountCards.Core.Domains.Users.Services
         
         public async Task<string> Create(User user)
         {
+            if (string.IsNullOrEmpty(user.Login))
+                throw new ValidationException("Логин не должен быть пустым");
+            
+            if (string.IsNullOrEmpty(user.Password))
+                throw new ValidationException("Пароль не должен быть пустым");
+            
             if (_userRepository.ContainsByLogin(user.Login))
-                throw new ArgumentException("Логин уже существует");
+                throw new ValidationException("Логин уже существует");
             
             return await _userRepository.Create(user);
         }
@@ -40,6 +46,12 @@ namespace DiscountCards.Core.Domains.Users.Services
 
         public async Task<bool> Authentication(User user)
         {
+            if (string.IsNullOrEmpty(user.Login))
+                throw new ValidationException("Логин не должен быть пустым");
+            
+            if (string.IsNullOrEmpty(user.Password))
+                throw new ValidationException("Пароль не должен быть пустым");
+            
             return await _userRepository.Authentication(user);
         }
     }
