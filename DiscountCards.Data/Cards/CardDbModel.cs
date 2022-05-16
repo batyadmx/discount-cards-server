@@ -13,6 +13,7 @@ namespace DiscountCards.Data.Cards
         public int ShopId { get; set; }
         public ShopDbModel Shop { get; set; }
         public string Number { get; set; }
+        public int Standart { get; set; }
     }
     
     internal class Map : IEntityTypeConfiguration<CardDbModel>
