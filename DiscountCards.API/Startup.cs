@@ -26,6 +26,8 @@ namespace DiscountCards.API
                 .AddData(Configuration)
                 .AddCore();
 
+            services.AddHttpClient();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

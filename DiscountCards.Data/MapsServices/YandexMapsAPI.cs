@@ -1,0 +1,95 @@
+﻿using DiscountCards.Core.Domains.Maps;
+using DiscountCards.Core.Domains.ShopLocations;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using DiscountCards.Data.Shops;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace DiscountCards.Data.MapAPI
+{
+    public class YandexMapsAPI : IMapService
+    {
+        private HttpClient _httpClient;
+        private IConfiguration _configuration;
+        private ShopsRepository _shopsRepository;
+
+        public YandexMapsAPI(HttpClient httpClient, IConfiguration configuration, ShopsRepository shopsRepository)
+        {
+            _httpClient = httpClient;
+            _configuration = configuration;
+            _shopsRepository = shopsRepository;
+        }
+
+        public async Task<string> GetCityByCoordinates(GeographicalCoordinates coords)
+        {
+            var api_key = _configuration["SecretYandexApiKey"];
+
+            var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={coords}&apikey={api_key}&lang=ru_RU&results=1");
+            var rawJson = await response.Content.ReadAsStringAsync();
+
+            string city;
+
+            using (JsonDocument document = JsonDocument.Parse(rawJson))
+            {
+                var root = document.RootElement;
+
+                var shopInfo = root.GetProperty("features")
+                                     .EnumerateArray()
+                                     .ElementAt(0);
+
+                var address = shopInfo.GetProperty("properties")
+                                      .GetProperty("description")
+                                      .GetRawText();
+
+                city = address.Split(',')[address.Split(',').Length - 3].Trim();
+            }
+
+            return city;
+        }
+
+        public async Task<ShopLocation> GetShopLocation(ShopLocationRequest request)
+        {
+            var api_key = _configuration["SecretYandexApiKey"];
+            var coords = request.Coordinates;
+            var shop = await _shopsRepository.GetShopName(request.ShopId);
+
+            var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={shop}&apikey={api_key}&lang=ru_RU&ll={coords}&results=1");
+            var rawJson = await response.Content.ReadAsStringAsync();
+
+            var shopCoords = GetShopCoordinatesFromJson(rawJson);
+
+            return new ShopLocation() { ShopId = request.ShopId, City = "Арстотска", Coordinates = shopCoords};
+        }
+
+        private static GeographicalCoordinates GetShopCoordinatesFromJson(string rawJson)
+        {
+            List<float> shopCoords;
+
+            using (JsonDocument document = JsonDocument.Parse(rawJson))
+            {
+                var root = document.RootElement;
+
+                if (root.GetProperty("features").EnumerateArray().Count() == 0)
+                    throw new Exception($"Магазин не найден на карте");
+
+                var shopInfo = root.GetProperty("features")
+                                     .EnumerateArray()
+                                     .ElementAt(0);
+
+                shopCoords = shopInfo.GetProperty("geometry")
+                                     .GetProperty("coordinates")
+                                     .EnumerateArray()
+                                     .ToList()
+                                     .Select(je => (float)je.GetDouble())
+                                     .ToList();
+            }
+
+            return new GeographicalCoordinates(shopCoords[0], shopCoords[1]);
+        }
+    }
+}
