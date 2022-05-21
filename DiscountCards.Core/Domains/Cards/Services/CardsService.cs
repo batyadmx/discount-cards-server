@@ -29,7 +29,7 @@ namespace DiscountCards.Core.Domains.Cards.Services
             return await _cardsRepository.GetAllUserCards(login);
         }
 
-        public async Task<string> Create(Card card)
+        public async Task<int> Create(Card card)
         {
             if (string.IsNullOrEmpty(card.Number))
                 throw new ValidationException("Номер карты не должен быть пустым");

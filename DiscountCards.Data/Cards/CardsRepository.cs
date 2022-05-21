@@ -54,7 +54,7 @@ namespace DiscountCards.Data.Cards
                 }).ToListAsync();
         }
 
-        public async Task<string> Create(Card card)
+        public async Task<int> Create(Card card)
         {
             var shop = await _context.Shops.FirstOrDefaultAsync(it => it.Id == card.ShopId);
 
@@ -73,7 +73,7 @@ namespace DiscountCards.Data.Cards
             
             await _context.SaveChangesAsync();
             
-            return entity.Id.ToString();
+            return entity.Id;
         }
 
         public async Task Delete(int id)
