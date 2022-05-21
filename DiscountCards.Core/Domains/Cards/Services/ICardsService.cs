@@ -10,7 +10,7 @@ namespace DiscountCards.Core.Domains.Cards.Services
     {
         Task<Card> Get(int id);
         Task<IEnumerable<Card>> GetAllUserCards(string login);
-        Task<string> Create(Card card);
+        Task<int> Create(Card card);
         Task Delete(int id);
     }
 }

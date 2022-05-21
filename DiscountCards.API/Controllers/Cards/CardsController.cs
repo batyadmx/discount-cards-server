@@ -53,7 +53,7 @@ namespace DiscountCards.API.Controllers.Cards
         }
 
         [HttpPost]
-        public async Task<string> Create(CreateCardDto model)
+        public async Task<int> Create(CreateCardDto model)
         {
             var user = await  _userService.GetByLogin(model.UserLogin);
                 
