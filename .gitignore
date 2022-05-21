@@ -36,4 +36,5 @@ _ReSharper*/
 packages/
 .idea/
 .vscode/
-.appsettings.json
+DiscountCards.API/appsettings.json
+
