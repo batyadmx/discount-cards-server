@@ -3,15 +3,17 @@ using System;
 using DiscountCards.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DiscountCards.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220515132413_Update Card Model")]
+    partial class UpdateCardModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,39 +55,6 @@ namespace DiscountCards.Data.Migrations
                         .HasDatabaseName("ix_cards_user_id");
 
                     b.ToTable("cards");
-                });
-
-            modelBuilder.Entity("DiscountCards.Data.ShopLocations.ShopLocationDbModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("City")
-                        .HasColumnType("text")
-                        .HasColumnName("city");
-
-                    b.Property<float>("Latitiude")
-                        .HasColumnType("real")
-                        .HasColumnName("latitiude");
-
-                    b.Property<float>("Longtitude")
-                        .HasColumnType("real")
-                        .HasColumnName("longtitude");
-
-                    b.Property<int>("ShopId")
-                        .HasColumnType("integer")
-                        .HasColumnName("shop_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_shop_locations");
-
-                    b.HasIndex("ShopId")
-                        .HasDatabaseName("ix_shop_locations_shop_id");
-
-                    b.ToTable("shop_locations");
                 });
 
             modelBuilder.Entity("DiscountCards.Data.Shops.ShopDbModel", b =>
@@ -155,18 +124,6 @@ namespace DiscountCards.Data.Migrations
                     b.Navigation("Shop");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DiscountCards.Data.ShopLocations.ShopLocationDbModel", b =>
-                {
-                    b.HasOne("DiscountCards.Data.Shops.ShopDbModel", "Shop")
-                        .WithMany()
-                        .HasForeignKey("ShopId")
-                        .HasConstraintName("fk_shop_locations_shops_shop_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("DiscountCards.Data.Users.UserDbModel", b =>

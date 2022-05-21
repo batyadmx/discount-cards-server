@@ -30,7 +30,8 @@ namespace DiscountCards.Data.Cards
                 Id = entity.Id, 
                 UserId = entity.UserId,
                 ShopId = entity.ShopId,
-                Number = entity.Number
+                Number = entity.Number,
+                Standart = entity.Standart
             };
 
             return card;
@@ -48,7 +49,8 @@ namespace DiscountCards.Data.Cards
                     Id = it.Id, 
                     UserId = it.UserId,
                     ShopId = it.ShopId,
-                    Number = it.Number
+                    Number = it.Number,
+                    Standart = it.Standart
                 }).ToListAsync();
         }
 
@@ -63,7 +65,8 @@ namespace DiscountCards.Data.Cards
             {
                 UserId = card.UserId,
                 ShopId = card.ShopId,
-                Number = card.Number
+                Number = card.Number,
+                Standart = card.Standart
             };
             
             await _context.Cards.AddAsync(entity);

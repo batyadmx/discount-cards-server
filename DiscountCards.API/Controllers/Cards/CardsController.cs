@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DiscountCards.API.Controllers.Cards.Dto;
@@ -7,7 +6,6 @@ using DiscountCards.Core.Domains.Cards;
 using DiscountCards.Core.Domains.Cards.Services;
 using DiscountCards.Core.Domains.Users.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace DiscountCards.API.Controllers.Cards
 {
@@ -34,7 +32,8 @@ namespace DiscountCards.API.Controllers.Cards
                 Id = model.Id,
                 UserId = model.UserId,
                 ShopId = model.ShopId,
-                Number = model.Number
+                Number = model.Number,
+                Standart = model.Standart
             };
         }
         
@@ -48,7 +47,8 @@ namespace DiscountCards.API.Controllers.Cards
                 Id = model.Id,
                 UserId = model.UserId,
                 ShopId = model.ShopId,
-                Number = model.Number
+                Number = model.Number,
+                Standart = model.Standart
             });
         }
 
@@ -61,7 +61,8 @@ namespace DiscountCards.API.Controllers.Cards
             {
                 UserId = user.Id,
                 ShopId = model.ShopId,
-                Number = model.Number
+                Number = model.Number,
+                Standart = model.Standart
             });
         }
 
