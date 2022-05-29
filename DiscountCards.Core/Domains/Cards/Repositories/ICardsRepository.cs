@@ -11,6 +11,6 @@ namespace DiscountCards.Core.Domains.Cards.Repositories
         Task<Card> Get(int id);
         Task<IEnumerable<Card>> GetAllUserCards(string login);
         Task<int> Create(Card card);
-        Task Delete(int id);
+        Task Delete(string number);
     }
 }

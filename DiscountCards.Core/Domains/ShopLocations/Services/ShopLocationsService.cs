@@ -8,10 +8,10 @@ using DiscountCards.Core.Domains.Maps;
 
 namespace DiscountCards.Core.Domains.ShopLocations.Services
 {
-    class ShopLocationsService : IShopLocationsService
+    public class ShopLocationsService : IShopLocationsService
     {
-        private IShopLocationsRepository _shopLocationsRepository;
-        private IMapService _mapService;
+        private readonly IShopLocationsRepository _shopLocationsRepository;
+        private readonly IMapService _mapService;
 
         public ShopLocationsService(IShopLocationsRepository repository, IMapService mapService)
         {

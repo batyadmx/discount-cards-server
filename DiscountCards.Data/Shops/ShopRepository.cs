@@ -1,19 +1,19 @@
 ﻿using DiscountCards.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using DiscountCards.Core.Domains.Shops;
+using DiscountCards.Core.Domains.Shops.Repositories;
 
 namespace DiscountCards.Data.Shops
 {
-    public class ShopsRepository
+    public class ShopRepository : IShopRepository
     {
         private readonly DataContext _db;
         
-        public ShopsRepository(DataContext db)
+        public ShopRepository(DataContext db)
         {
             _db = db;
         }
@@ -26,6 +26,15 @@ namespace DiscountCards.Data.Shops
                 throw new ObjectNotFoundException($"Shop с таким {id} не найден");
 
             return shopName.Name;
+        }
+
+        public async Task<IEnumerable<Shop>> GetAllShopsAsync()
+        {
+            return await _db.Shops.Select(x => new Shop()
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
         }
     }
 }

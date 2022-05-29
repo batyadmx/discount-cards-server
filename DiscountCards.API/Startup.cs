@@ -24,8 +24,8 @@ namespace DiscountCards.API
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddData(Configuration)
-                .AddCore();
+                .AddCore()
+                .AddData(Configuration);
 
             services.AddHttpClient();
 

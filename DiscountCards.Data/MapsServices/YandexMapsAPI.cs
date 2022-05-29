@@ -4,11 +4,10 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using DiscountCards.Data.Shops;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Linq;
 using System.Collections.Generic;
+using DiscountCards.Core.Domains.Shops.Repositories;
 using System.Device.Location;
 
 namespace DiscountCards.Data.MapAPI
@@ -17,13 +16,13 @@ namespace DiscountCards.Data.MapAPI
     {
         private HttpClient _httpClient;
         private IConfiguration _configuration;
-        private ShopsRepository _shopsRepository;
+        private IShopRepository _shopRepository;
 
-        public YandexMapsAPI(HttpClient httpClient, IConfiguration configuration, ShopsRepository shopsRepository)
+        public YandexMapsAPI(HttpClient httpClient, IConfiguration configuration, IShopRepository shopRepository)
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            _shopsRepository = shopsRepository;
+            _shopRepository = shopRepository;
         }
 
         public async Task<string> GetCityByCoordinates(GeoCoordinate coords)

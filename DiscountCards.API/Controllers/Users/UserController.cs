@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using DiscountCards.Core.Domains.Users.Services;
 using DiscountCards.API.Controllers.Users.Dto;
 using DiscountCards.Core.Domains.Users;
-using Microsoft.AspNetCore.Routing;
 
 namespace DiscountCards.API.Controllers.Users
 {

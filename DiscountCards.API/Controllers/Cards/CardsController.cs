@@ -32,7 +32,7 @@ namespace DiscountCards.API.Controllers.Cards
             {
                 Id = model.Id,
                 UserId = model.UserId,
-                ShopId = model.ShopId,
+                ShopName = model.ShopName,
                 Number = model.Number,
                 Standart = model.Standart
             };
@@ -47,7 +47,7 @@ namespace DiscountCards.API.Controllers.Cards
             {
                 Id = model.Id,
                 UserId = model.UserId,
-                ShopId = model.ShopId,
+                ShopName = model.ShopName,
                 Number = model.Number,
                 Standart = model.Standart
             });
@@ -61,16 +61,16 @@ namespace DiscountCards.API.Controllers.Cards
             return await _cardsService.Create(new Card
             {
                 UserId = user.Id,
-                ShopId = model.ShopId,
+                ShopName = model.ShopName,
                 Number = model.Number,
                 Standart = model.Standart
             });
         }
 
-        [HttpDelete("{id:int}")] 
-        public async Task Delete(int id)
+        [HttpDelete("{number}")] 
+        public async Task DeleteByNumber(string number)
         {
-            await _cardsService.Delete(id);
+            await _cardsService.Delete(number);
         }
     }
 }
