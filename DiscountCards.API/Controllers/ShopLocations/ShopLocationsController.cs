@@ -7,6 +7,7 @@ using DiscountCards.API.Controllers.ShopLocations.Dto;
 using DiscountCards.Core.Domains.ShopLocations.Services;
 using DiscountCards.Core.Domains.ShopLocations;
 using DiscountCards.Core.Domains.Maps;
+using System.Device.Location;
 
 namespace DiscountCards.API.Controllers.ShopLocations
 {
@@ -26,11 +27,12 @@ namespace DiscountCards.API.Controllers.ShopLocations
         {
             var shopLocationRequest = new ShopLocationRequest()
             {
-                Coordinates = new GeographicalCoordinates() { Latitude = request.Latitude, Longtitude = request.Longtitude },
-                ShopId = request.ShopId
+                Coordinates = new GeoCoordinate() { Latitude = request.Latitude, Longitude = request.Longitude },
+                Shop = request.Shop
             };
 
             return new ResponseShopLocationDto(await _shopLocationsService.GetShopLocation(shopLocationRequest));
         }
+
     }
 }

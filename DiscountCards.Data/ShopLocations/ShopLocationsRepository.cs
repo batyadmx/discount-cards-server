@@ -9,6 +9,7 @@ using DiscountCards.Core.Domains.ShopLocations.Repositories;
 using DiscountCards.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using DiscountCards.Core.Domains.Maps;
+using System.Device.Location;
 
 namespace DiscountCards.Data.ShopLocations
 {
@@ -21,12 +22,12 @@ namespace DiscountCards.Data.ShopLocations
         }
         public async Task Add(ShopLocation shopLocation)
         {
-            var shop = await _db.Shops.FirstOrDefaultAsync(s => s.Id == shopLocation.ShopId);
+            var shop = await _db.Shops.FirstOrDefaultAsync(s => s.Name == shopLocation.Shop);
 
             if (shop == null)
-                throw new ObjectNotFoundException($"Магазин с id {shopLocation.ShopId} не найден");
+                throw new ObjectNotFoundException($"Магазин с именем {shopLocation.Shop} не найден");
 
-            var entity = new ShopLocationDbModel(shopLocation);
+            var entity = new ShopLocationDbModel(shopLocation) { ShopId = shop.Id};
 
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();
@@ -34,28 +35,30 @@ namespace DiscountCards.Data.ShopLocations
 
         public async Task<ShopLocation> Get(ShopLocationRequest request)
         {
-            var shop = await _db.Shops.FirstOrDefaultAsync(s => s.Id == request.ShopId);
+            var shop = await _db.Shops.FirstOrDefaultAsync(s => s.Name == request.Shop);
 
             if (shop == null)
-                throw new ObjectNotFoundException($"Магазин с id {request.ShopId} не найден");
+                throw new ObjectNotFoundException($"Магазин с именем {request.Shop} не найден");
 
-            var reqShopLocations = await _db.ShopLocations.Where(sl => sl.ShopId == request.ShopId).ToListAsync();
+            var reqShopLocations = await _db.ShopLocations.Where(sl => sl.Shop.Name == request.Shop).ToListAsync();
 
             ShopLocationDbModel closestShop = null;
             float minDistance = float.MaxValue;
             foreach (var shopLocation in reqShopLocations)
             {
-                var distance = request.Coordinates.DistanceTo(new GeographicalCoordinates(shopLocation.Longtitude, shopLocation.Latitiude));
+                var distance = request.Coordinates.GetDistanceTo(new GeoCoordinate(shopLocation.Longtitude, shopLocation.Latitiude));
                 if (distance < minDistance)
                     closestShop = shopLocation;
             }
                                                 
             
-            return closestShop is null ? null : new ShopLocation() {
-                                                                        ShopId = closestShop.ShopId,
-                                                                        City = closestShop.City,
-                                                                        Coordinates = new GeographicalCoordinates(closestShop.Longtitude, closestShop.Latitiude)
-                                                                    };
+            return closestShop is null 
+                ? null 
+                : new ShopLocation() {
+                        Shop = closestShop.Shop.Name,
+                        City = closestShop.City,
+                        Coordinates = new GeoCoordinate(closestShop.Longtitude, closestShop.Latitiude)
+                                     };
         }
     }
 }

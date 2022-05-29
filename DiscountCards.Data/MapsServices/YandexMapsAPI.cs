@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Linq;
 using System.Collections.Generic;
+using System.Device.Location;
 
 namespace DiscountCards.Data.MapAPI
 {
@@ -25,7 +26,7 @@ namespace DiscountCards.Data.MapAPI
             _shopsRepository = shopsRepository;
         }
 
-        public async Task<string> GetCityByCoordinates(GeographicalCoordinates coords)
+        public async Task<string> GetCityByCoordinates(GeoCoordinate coords)
         {
             var api_key = _configuration["SecretYandexApiKey"];
 
@@ -56,19 +57,19 @@ namespace DiscountCards.Data.MapAPI
         {
             var api_key = _configuration["SecretYandexApiKey"];
             var coords = request.Coordinates;
-            var shop = await _shopsRepository.GetShopName(request.ShopId);
+            var shop = request.Shop;
 
             var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={shop}&apikey={api_key}&lang=ru_RU&ll={coords}&results=1");
             var rawJson = await response.Content.ReadAsStringAsync();
 
             var shopCoords = GetShopCoordinatesFromJson(rawJson);
 
-            return new ShopLocation() { ShopId = request.ShopId, City = "Арстотска", Coordinates = shopCoords};
+            return new ShopLocation() { Shop = request.Shop, City = "Арстотска", Coordinates = shopCoords};
         }
 
-        private static GeographicalCoordinates GetShopCoordinatesFromJson(string rawJson)
+        private static GeoCoordinate GetShopCoordinatesFromJson(string rawJson)
         {
-            List<float> shopCoords;
+            List<double> shopCoords;
 
             using (JsonDocument document = JsonDocument.Parse(rawJson))
             {
@@ -85,11 +86,11 @@ namespace DiscountCards.Data.MapAPI
                                      .GetProperty("coordinates")
                                      .EnumerateArray()
                                      .ToList()
-                                     .Select(je => (float)je.GetDouble())
+                                     .Select(je => je.GetDouble())
                                      .ToList();
             }
 
-            return new GeographicalCoordinates(shopCoords[0], shopCoords[1]);
+            return new GeoCoordinate(shopCoords[0], shopCoords[1]);
         }
     }
 }

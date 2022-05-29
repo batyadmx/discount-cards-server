@@ -28,7 +28,7 @@ namespace DiscountCards.Core.Domains.ShopLocations.Services
             if (shopLocation == null) 
             {
                 shopLocation = await _mapService.GetShopLocation(request);
-                _shopLocationsRepository.Add(shopLocation);
+                await _shopLocationsRepository.Add(shopLocation);
             }
                 
             return shopLocation;

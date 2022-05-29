@@ -8,8 +8,8 @@ namespace DiscountCards.API.Controllers.ShopLocations.Dto
 {
     public class RequestShopLocationDto
     {
-        public float Longtitude { get; set; }
-        public float Latitude { get; set; }
-        public int ShopId { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public string Shop { get; set; }
     }
 }

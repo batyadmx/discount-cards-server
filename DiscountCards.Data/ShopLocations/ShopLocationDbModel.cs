@@ -6,8 +6,8 @@ namespace DiscountCards.Data.ShopLocations
     public class ShopLocationDbModel
     {
         public int Id { get; set; }
-        public float Longtitude { get; set; }
-        public float Latitiude { get; set; }
+        public double Longtitude { get; set; }
+        public double Latitiude { get; set; }
         public string City { get; set; }
         public int ShopId { get; set; }
         public virtual ShopDbModel Shop{ get; set; }
@@ -16,10 +16,9 @@ namespace DiscountCards.Data.ShopLocations
 
         public ShopLocationDbModel(ShopLocation shopLocation)
         {
-            Longtitude = shopLocation.Coordinates.Longtitude;
+            Longtitude = shopLocation.Coordinates.Longitude;
             Latitiude = shopLocation.Coordinates.Latitude;
             City = shopLocation.City;
-            ShopId = shopLocation.ShopId;
         } 
     }
 }

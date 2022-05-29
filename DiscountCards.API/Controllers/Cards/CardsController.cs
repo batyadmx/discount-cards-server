@@ -6,6 +6,7 @@ using DiscountCards.Core.Domains.Cards;
 using DiscountCards.Core.Domains.Cards.Services;
 using DiscountCards.Core.Domains.Users.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Device.Location;
 
 namespace DiscountCards.API.Controllers.Cards
 {
