@@ -49,26 +49,14 @@ namespace DiscountCards.Data.Cards
             if (user == null)
                 throw new ObjectNotFoundException($"Пользователь с login={login} не найден");
 
-            var result = new List<Card>();
-            
-            foreach (var cardDbModel in  _context.Cards)
+            return await _context.Cards.Where(x => user.Login == login).Select(cardDbModel => new Card
             {
-                var shop = await _context.Shops.FirstOrDefaultAsync(c => c.Id == cardDbModel.ShopId);
-            
-                if (shop == null)
-                    throw new ObjectNotFoundException($"Магазин с id={cardDbModel.ShopId} не найден");
-                
-                result.Add(new Card
-                {
-                    Id = cardDbModel.Id,
-                    UserId = cardDbModel.UserId,
-                    ShopName = shop.Name,
-                    Number = cardDbModel.Number,
-                    Standart = cardDbModel.Standart
-                });
-            }
-
-            return result;
+                Id = cardDbModel.Id,
+                UserId = cardDbModel.UserId,
+                ShopName = cardDbModel.Shop.Name,
+                Number = cardDbModel.Number,
+                Standart = cardDbModel.Standart
+            }).ToListAsync();
         }
 
         public async Task<int> Create(Card card)
