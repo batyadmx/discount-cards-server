@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DiscountCards.Core.Domains.Cards.Services
@@ -11,6 +8,6 @@ namespace DiscountCards.Core.Domains.Cards.Services
         Task<Card> Get(int id);
         Task<IEnumerable<Card>> GetAllUserCards(string login);
         Task<int> Create(Card card);
-        Task Delete(int id);
+        Task Delete(string number);
     }
 }

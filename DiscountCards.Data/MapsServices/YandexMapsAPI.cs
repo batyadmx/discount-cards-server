@@ -4,11 +4,10 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using DiscountCards.Data.Shops;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Linq;
 using System.Collections.Generic;
+using DiscountCards.Core.Domains.Shops.Repositories;
 
 namespace DiscountCards.Data.MapAPI
 {
@@ -16,13 +15,13 @@ namespace DiscountCards.Data.MapAPI
     {
         private HttpClient _httpClient;
         private IConfiguration _configuration;
-        private ShopsRepository _shopsRepository;
+        private IShopRepository _shopRepository;
 
-        public YandexMapsAPI(HttpClient httpClient, IConfiguration configuration, ShopsRepository shopsRepository)
+        public YandexMapsAPI(HttpClient httpClient, IConfiguration configuration, IShopRepository shopRepository)
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            _shopsRepository = shopsRepository;
+            _shopRepository = shopRepository;
         }
 
         public async Task<string> GetCityByCoordinates(GeographicalCoordinates coords)
@@ -56,7 +55,7 @@ namespace DiscountCards.Data.MapAPI
         {
             var api_key = _configuration["SecretYandexApiKey"];
             var coords = request.Coordinates;
-            var shop = await _shopsRepository.GetShopName(request.ShopId);
+            var shop = await _shopRepository.GetShopName(request.ShopId);
 
             var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={shop}&apikey={api_key}&lang=ru_RU&ll={coords}&results=1");
             var rawJson = await response.Content.ReadAsStringAsync();

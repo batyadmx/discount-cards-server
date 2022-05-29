@@ -25,11 +25,16 @@ namespace DiscountCards.Data.Cards
 
             if (entity == null)
                 throw new ObjectNotFoundException($"Карта с id={id} не найдена");
+
+            var shop = await _context.Shops.FirstOrDefaultAsync(c => c.Id == entity.ShopId);
+            
+            if (shop == null)
+                throw new ObjectNotFoundException($"Магазин с id={entity.ShopId} не найден");
             
             var card = new Card() { 
                 Id = entity.Id, 
                 UserId = entity.UserId,
-                ShopId = entity.ShopId,
+                ShopName = shop.Name,
                 Number = entity.Number,
                 Standart = entity.Standart
             };
@@ -44,27 +49,39 @@ namespace DiscountCards.Data.Cards
             if (user == null)
                 throw new ObjectNotFoundException($"Пользователь с login={login} не найден");
 
-            return await _context.Cards.Where(it => it.UserId == user.Id).Select(it => 
-                new Card { 
-                    Id = it.Id, 
-                    UserId = it.UserId,
-                    ShopId = it.ShopId,
-                    Number = it.Number,
-                    Standart = it.Standart
-                }).ToListAsync();
+            var result = new List<Card>();
+            
+            foreach (var cardDbModel in  _context.Cards)
+            {
+                var shop = await _context.Shops.FirstOrDefaultAsync(c => c.Id == cardDbModel.ShopId);
+            
+                if (shop == null)
+                    throw new ObjectNotFoundException($"Магазин с id={cardDbModel.ShopId} не найден");
+                
+                result.Add(new Card
+                {
+                    Id = cardDbModel.Id,
+                    UserId = cardDbModel.UserId,
+                    ShopName = shop.Name,
+                    Number = cardDbModel.Number,
+                    Standart = cardDbModel.Standart
+                });
+            }
+
+            return result;
         }
 
         public async Task<int> Create(Card card)
         {
-            var shop = await _context.Shops.FirstOrDefaultAsync(it => it.Id == card.ShopId);
+            var shop = await _context.Shops.FirstOrDefaultAsync(it => it.Name == card.ShopName);
 
             if (shop == null)
-                throw new ObjectNotFoundException($"Магазина с id={card.ShopId} не существует");
+                throw new ObjectNotFoundException($"Магазина с name={card.ShopName} не существует");
 
             var entity = new CardDbModel()
             {
                 UserId = card.UserId,
-                ShopId = card.ShopId,
+                ShopId = shop.Id,
                 Number = card.Number,
                 Standart = card.Standart
             };
@@ -76,12 +93,12 @@ namespace DiscountCards.Data.Cards
             return entity.Id;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(string number)
         {
-            var entity = await _context.Cards.FirstOrDefaultAsync(c => c.Id == id);
+            var entity = await _context.Cards.FirstOrDefaultAsync(c => c.Number == number);
 
             if (entity == null)
-                throw new ObjectNotFoundException($"Карта с id={id} не найдена");
+                throw new ObjectNotFoundException($"Карта с number={number} не найдена");
             
             _context.Cards.Remove(entity);
             

@@ -37,9 +37,9 @@ namespace DiscountCards.Core.Domains.Cards.Services
             return await _cardsRepository.Create(card);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(string number)
         {
-            await _cardsRepository.Delete(id);
+            await _cardsRepository.Delete(number);
         }
     }
 }
