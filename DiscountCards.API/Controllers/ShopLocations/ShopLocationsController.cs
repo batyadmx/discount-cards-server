@@ -31,7 +31,9 @@ namespace DiscountCards.API.Controllers.ShopLocations
                 Shop = request.Shop
             };
 
-            return new ResponseShopLocationDto(await _shopLocationsService.GetShopLocation(shopLocationRequest));
+            var shopLocation = await _shopLocationsService.GetShopLocation(shopLocationRequest);
+
+            return new ResponseShopLocationDto(shopLocation);
         }
 
     }
