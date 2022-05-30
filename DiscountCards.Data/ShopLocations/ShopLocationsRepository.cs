@@ -33,7 +33,7 @@ namespace DiscountCards.Data.ShopLocations
             await _db.SaveChangesAsync();
         }
 
-        public async Task<ShopLocation> Get(ShopLocationRequest request)
+        public async Task<List<ShopLocation>> GetAll(ShopLocationRequest request)
         {
             var shop = await _db.Shops.FirstOrDefaultAsync(s => s.Name == request.Shop);
 
@@ -42,23 +42,13 @@ namespace DiscountCards.Data.ShopLocations
 
             var reqShopLocations = await _db.ShopLocations.Where(sl => sl.Shop.Name == request.Shop).ToListAsync();
 
-            ShopLocationDbModel closestShop = null;
-            float minDistance = float.MaxValue;
-            foreach (var shopLocation in reqShopLocations)
-            {
-                var distance = request.Coordinates.GetDistanceTo(new GeoCoordinate(shopLocation.Longtitude, shopLocation.Latitiude));
-                if (distance < minDistance)
-                    closestShop = shopLocation;
-            }
-                                                
-            
-            return closestShop is null 
-                ? null 
-                : new ShopLocation() {
-                        Shop = closestShop.Shop.Name,
-                        City = closestShop.City,
-                        Coordinates = new GeoCoordinate(closestShop.Longtitude, closestShop.Latitiude)
-                                     };
+            return reqShopLocations.Select(
+                e => new ShopLocation() { 
+                    Shop = e.Shop.Name, 
+                    Coordinates = new GeoCoordinate(e.Latitiude, e.Longitude),
+                    City = e.City
+                }
+                ).ToList();
         }
     }
 }

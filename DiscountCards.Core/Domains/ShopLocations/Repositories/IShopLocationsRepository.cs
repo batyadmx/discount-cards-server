@@ -8,7 +8,7 @@ namespace DiscountCards.Core.Domains.ShopLocations.Repositories
 {
     public interface IShopLocationsRepository
     {
-        Task<ShopLocation> Get(ShopLocationRequest request);
         Task Add(ShopLocation shopLocation);
+        Task<List<ShopLocation>> GetAll(ShopLocationRequest request);
     }
 }
