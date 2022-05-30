@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +25,10 @@ namespace DiscountCards.Core.Domains.ShopLocations.Services
             //request.City = await _mapService.GetCityByCoordinates(request.Coordinates);
 
             var shopLocations = await _shopLocationsRepository.GetAll(request);
-
+            
             var shopsInSpn = shopLocations.Where(e => request.Coordinates.GetDistanceTo(e.RequestLocation) < 10000).ToList();
+
+            var abc = shopLocations.Select(x => request.Coordinates.GetDistanceTo(x.RequestLocation)).ToList();
 
             if (shopsInSpn.Count == 0) 
             {
@@ -52,6 +55,16 @@ namespace DiscountCards.Core.Domains.ShopLocations.Services
                 }
             }
 
+            if (closestShop == null)
+                return new ShopLocation()
+                {
+                    Coordinates = new GeoCoordinate()
+                    {
+                        Latitude = -1,
+                        Longitude = -1
+                    }
+                };
+            
             return closestShop;
         }
     }

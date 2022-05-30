@@ -53,7 +53,8 @@ namespace DiscountCards.Data.MapAPI
                 var root = document.RootElement;
 
                 if (root.GetProperty("features").EnumerateArray().Count() == 0)
-                    throw new Exception($"Магазин не найден на карте");
+                    return new List<GeoCoordinate>();
+                    // throw new Exception($"Магазин не найден на карте");
 
                 foreach (var shopInfo in root.GetProperty("features").EnumerateArray())
                 {
