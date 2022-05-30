@@ -20,14 +20,14 @@ namespace DiscountCards.Data.ShopLocations
         {
             _db = db;
         }
-        public async Task Add(ShopLocation shopLocation)
+        public async Task Add(ShopLocation shopLocation, ShopLocationRequest request)
         {
             var shop = await _db.Shops.FirstOrDefaultAsync(s => s.Name == shopLocation.Shop);
 
             if (shop == null)
                 throw new ObjectNotFoundException($"Магазин с именем {shopLocation.Shop} не найден");
 
-            var entity = new ShopLocationDbModel(shopLocation) { ShopId = shop.Id};
+            var entity = new ShopLocationDbModel(shopLocation, request, shop.Id);
 
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();
@@ -46,7 +46,8 @@ namespace DiscountCards.Data.ShopLocations
                 e => new ShopLocation() { 
                     Shop = e.Shop.Name, 
                     Coordinates = new GeoCoordinate(e.Latitiude, e.Longitude),
-                    City = e.City
+                    City = e.City,
+                    RequestLocation = new GeoCoordinate(e.RequestLatitude, e.RequestLongitude)
                 }
                 ).ToList();
         }

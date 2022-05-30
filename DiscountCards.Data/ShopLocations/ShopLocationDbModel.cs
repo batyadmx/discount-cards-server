@@ -16,10 +16,13 @@ namespace DiscountCards.Data.ShopLocations
 
         public ShopLocationDbModel() { }
 
-        public ShopLocationDbModel(ShopLocation shopLocation)
+        public ShopLocationDbModel(ShopLocation shopLocation, ShopLocationRequest request, int shopId)
         {
             Longitude = shopLocation.Coordinates.Longitude;
             Latitiude = shopLocation.Coordinates.Latitude;
+            RequestLatitude = request.Coordinates.Latitude;
+            RequestLongitude = request.Coordinates.Longitude;
+            ShopId = shopId;
             City = shopLocation.City;
         } 
     }

@@ -25,13 +25,13 @@ namespace DiscountCards.Core.Domains.ShopLocations.Services
 
             var shopLocations = await _shopLocationsRepository.GetAll(request);
 
-            var shopsInSpn = shopLocations.Where(e => request.Coordinates.GetDistanceTo(e.Coordinates) < 10000).ToList();
+            var shopsInSpn = shopLocations.Where(e => request.Coordinates.GetDistanceTo(e.RequestLocation) < 10000).ToList();
 
             if (shopsInSpn.Count == 0) 
             {
                 shopsInSpn = await _mapService.GetAllShopLocations(request, 0.1, 0.1);
                 foreach (var el in shopsInSpn)
-                    await _shopLocationsRepository.Add(el);
+                    await _shopLocationsRepository.Add(el, request);
             }
                 
             return GetClosestShop(shopsInSpn, request);

@@ -13,5 +13,6 @@ namespace DiscountCards.Core.Domains.ShopLocations
         public GeoCoordinate Coordinates { get; set; }
         public string City { get; set; }
         public string Shop { get; set; }
+        public GeoCoordinate RequestLocation { get; set; }
     }
 }
