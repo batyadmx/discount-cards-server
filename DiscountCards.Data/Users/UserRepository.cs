@@ -76,6 +76,19 @@ namespace DiscountCards.Data.Users
             await _context.SaveChangesAsync();
         }
 
+        public async Task Update(User user)
+        {
+            var entity = await _context.Users.FirstOrDefaultAsync(it => it.Id == user.Id);
+
+            if (entity == null)
+                throw new ObjectNotFoundException($"Пользователь с Id = {user.Id} не найден");
+
+            entity.Login = user.Login;
+            entity.Password = user.Password;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<bool> Authentication(User user)
         {
             var entity = await _context.Users.FirstOrDefaultAsync(c => c.Login == user.Login);

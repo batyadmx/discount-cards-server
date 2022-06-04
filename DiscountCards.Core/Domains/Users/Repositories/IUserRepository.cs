@@ -12,6 +12,7 @@ namespace DiscountCards.Core.Domains.Users.Repositories
         Task<User> GetByLogin(string login);
         Task<string> Create(User user);
         Task Delete(int id);
+        Task Update(User user);
         Task<bool> Authentication(User user);
         bool ContainsByLogin(string login);
     }

@@ -13,5 +13,6 @@ namespace DiscountCards.Core.Domains.Users.Services
         Task<string> Create(User user);
         Task Delete(int id);
         Task<bool> Authentication(User user);
+        Task ChangePassword(ChangePassword changePasswordModel);
     }
 }

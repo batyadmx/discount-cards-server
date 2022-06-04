@@ -36,6 +36,17 @@ namespace DiscountCards.API.Controllers.Users
                 Password = user.Password
             });
         }
+        
+        [HttpPost("change_password")]
+        public async Task ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            await _userService.ChangePassword(new ChangePassword()
+            {
+                Login = changePasswordDto.Login,
+                CurrentPassword = changePasswordDto.CurrentPassword,
+                NewPassword = changePasswordDto.NewPassword
+            });
+        }
 
         [HttpGet("{id}")]
         public async Task<UserDto> Get(int id)

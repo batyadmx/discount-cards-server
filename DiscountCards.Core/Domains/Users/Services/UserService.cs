@@ -54,5 +54,26 @@ namespace DiscountCards.Core.Domains.Users.Services
             
             return await _userRepository.Authentication(user);
         }
+
+        public async Task ChangePassword(ChangePassword changePasswordModel)
+        {
+            if (string.IsNullOrEmpty(changePasswordModel.Login))
+                throw new ValidationException("Логин не должен быть пустым");
+            
+            if (string.IsNullOrEmpty(changePasswordModel.CurrentPassword))
+                throw new ValidationException("Пароль не должен быть пустым");
+            
+            if (string.IsNullOrEmpty(changePasswordModel.NewPassword))
+                throw new ValidationException("Пароль не должен быть пустым");
+
+            var user = await _userRepository.GetByLogin(changePasswordModel.Login);
+
+            if (user.Password != changePasswordModel.CurrentPassword)
+                throw new ValidationException("Неправильный пароль");
+
+            user.Password = changePasswordModel.NewPassword;
+
+            await _userRepository.Update(user);
+        }
     }
 }
