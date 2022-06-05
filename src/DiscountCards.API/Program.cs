@@ -1,6 +1,7 @@
-using System.Net;
-using Microsoft.AspNetCore;
+using DiscountCards.Data.Context;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace DiscountCards.API
@@ -9,7 +10,15 @@ namespace DiscountCards.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+                db.Database.Migrate();
+            }
+
+            host.Run();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

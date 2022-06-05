@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  storage:
+    container_name: discount_cards_storage
+    image: postgres:14
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: DiscountCards
+      POSTGRES_USER: discount_cards
+      POSTGRES_PASSWORD: qwerty12345
+    volumes:
+      - ~/volumes/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d DiscountCards -U discount_cards"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: discount_cards_app
+    image: ksamnole/discount_cards:1.0.0.0
+    depends_on:
+      storage:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      ConnectionStringPostgresql: Host=storage;Port=5432;Database=DiscountCards;Username=discount_cards;Password=qwerty12345

@@ -1,4 +1,5 @@
 using System;
+using DiscountCards.API.HostedServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,8 @@ namespace DiscountCards.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+	    services.AddHostedService<MigrationHostedService>();
+
             services
                 .AddCore()
                 .AddData(Configuration);
