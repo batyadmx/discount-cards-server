@@ -1,8 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using DiscountCards.Core;
 using Microsoft.AspNetCore.Http;
-
 
 namespace DiscountCards.API.Middlewares
 {
@@ -28,6 +28,12 @@ namespace DiscountCards.API.Middlewares
             }
             catch (Exception exception)
             {
+                using (StreamWriter sw = new StreamWriter("log.txt", true))
+                {
+                    await sw.WriteLineAsync($"Message - {exception.Message}");
+                    sw.Close();
+                }
+                
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await httpContext.Response.WriteAsJsonAsync(new { Message = "Внутренняя ошибка сервера" });
             }

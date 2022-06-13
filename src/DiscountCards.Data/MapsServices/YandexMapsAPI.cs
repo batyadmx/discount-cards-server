@@ -34,7 +34,7 @@ namespace DiscountCards.Data.MapAPI
         {
             var api_key = _configuration["SecretYandexApiKey"];
             var coords = $"{request.Coordinates.Longitude},{request.Coordinates.Latitude}";
-            var shop = request.Shop;
+            var shop = request.Shop.Replace("&", "%26");
 
             var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={shop}&apikey={api_key}&lang=ru_RU&ll={coords}&results=1");
             var rawJson = await response.Content.ReadAsStringAsync();
