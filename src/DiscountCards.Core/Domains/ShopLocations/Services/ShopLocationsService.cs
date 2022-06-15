@@ -36,7 +36,7 @@ namespace DiscountCards.Core.Domains.ShopLocations.Services
                 foreach (var el in shopsInSpn)
                     await _shopLocationsRepository.Add(el, request);
             }
-                
+            
             return GetClosestShop(shopsInSpn, request);
         }
 

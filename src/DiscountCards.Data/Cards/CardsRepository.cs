@@ -44,12 +44,7 @@ namespace DiscountCards.Data.Cards
 
         public async Task<IEnumerable<Card>> GetAllUserCards(string login)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(it => it.Login == login);
-
-            if (user == null)
-                throw new ObjectNotFoundException($"Пользователь с login={login} не найден");
-
-            return await _context.Cards.Where(x => user.Login == login).Select(cardDbModel => new Card
+            return await _context.Cards.Include(x => x.User).Where(x => x.User.Login == login).Select(cardDbModel => new Card
             {
                 Id = cardDbModel.Id,
                 UserId = cardDbModel.UserId,

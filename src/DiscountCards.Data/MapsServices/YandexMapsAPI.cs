@@ -34,9 +34,9 @@ namespace DiscountCards.Data.MapAPI
         {
             var api_key = _configuration["SecretYandexApiKey"];
             var coords = $"{request.Coordinates.Longitude},{request.Coordinates.Latitude}";
-            var shop = request.Shop.Replace("&", "%26");
+            var shop = request.Shop;
 
-            var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={shop}&apikey={api_key}&lang=ru_RU&ll={coords}&results=1");
+            var response = await _httpClient.GetAsync($"https://search-maps.yandex.ru/v1/?text={shop.Replace("&", "%26")}&apikey={api_key}&lang=ru_RU&ll={coords}&results=1");
             var rawJson = await response.Content.ReadAsStringAsync();
 
             var shopCoords = GetAllShopCoordinatesFromJson(rawJson);
@@ -77,7 +77,7 @@ namespace DiscountCards.Data.MapAPI
             var api_key = _configuration["SecretYandexApiKey"];
             var coords = $"{request.Coordinates.Longitude.ToString(format)},{request.Coordinates.Latitude.ToString(format)}";
             var shop = request.Shop;
-            var apiReq = $"https://search-maps.yandex.ru/v1/?text={shop}&apikey={api_key}&spn={spnLat.ToString(format)},{spnLon.ToString(format)}&lang=ru_RU&ll={coords}&results=500&rspn=1";
+            var apiReq = $"https://search-maps.yandex.ru/v1/?text={shop.Replace("&", "%26")}&apikey={api_key}&spn={spnLat.ToString(format)},{spnLon.ToString(format)}&lang=ru_RU&ll={coords}&results=500&rspn=1";
 
             var resp = await _httpClient.GetAsync(apiReq);
 
